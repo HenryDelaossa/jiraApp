@@ -1,10 +1,15 @@
+import { Typography } from '@mui/material';
 import type { NextPage } from 'next';
+import { Layout } from '../components/Layouts';
 
 const Home: NextPage = () => {
   return (
-    <div >
-      openjira
-    </div>
+    <Layout title='Jira'>
+      <Typography variant="h1" >
+        hola Henry
+      </Typography>
+    </Layout>
+
   )
 }
 
