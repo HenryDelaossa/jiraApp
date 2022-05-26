@@ -4,10 +4,12 @@ import { UIContex, uiReducer } from './';
 
 export interface UIState {
     sideBarMenuOpen: boolean
+    isAddingEntry: boolean
 }
 
 const UI_INITIAL_STATE: UIState = {
-    sideBarMenuOpen: false
+    sideBarMenuOpen: false,
+    isAddingEntry: false
 }
 
 export const UIProvider: FC<PropsWithChildren<UIState>> = ({ children }) => {
@@ -15,19 +17,26 @@ export const UIProvider: FC<PropsWithChildren<UIState>> = ({ children }) => {
     const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE)
 
     const openSideBarMenu = () => {
-        dispatch({type:"UI - Open Sidebar"})
+        dispatch({ type: "UI - Open Sidebar" })
     }
 
     const closeSideBarMenu = () => {
-        dispatch({type:"UI - Close Sidebar"})
+        dispatch({ type: "UI - Close Sidebar" })
+    }
+
+    const setIsAddingEntry = (isAdding: boolean) => {
+        dispatch({ type: 'UI - Set IsAddEntry', payload: isAdding })
     }
 
     return (
         <UIContex.Provider value={{
             ...state,
-            // metodo
+            // metodos
+            // abrir y cerrar sidebarmenu
             openSideBarMenu,
-            closeSideBarMenu
+            closeSideBarMenu,
+            // set agregar entrada tareas
+            setIsAddingEntry
         }}>
             {children}
         </UIContex.Provider>
