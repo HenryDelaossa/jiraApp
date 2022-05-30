@@ -5,11 +5,13 @@ import { UIContex, uiReducer } from './';
 export interface UIState {
     sideBarMenuOpen: boolean
     isAddingEntry: boolean
+    isDragging: boolean
 }
 
 const UI_INITIAL_STATE: UIState = {
     sideBarMenuOpen: false,
-    isAddingEntry: false
+    isAddingEntry: false,
+    isDragging: false
 }
 
 export const UIProvider: FC<PropsWithChildren<UIState>> = ({ children }) => {
@@ -28,6 +30,13 @@ export const UIProvider: FC<PropsWithChildren<UIState>> = ({ children }) => {
         dispatch({ type: 'UI - Set IsAddEntry', payload: isAdding })
     }
 
+    const startDragging = () => {
+        dispatch({type:'UI - Start Dragging'})
+    }
+    const endDragging = () => {
+        dispatch({type:'UI - End Dragging'})
+    }
+
     return (
         <UIContex.Provider value={{
             ...state,
@@ -36,7 +45,10 @@ export const UIProvider: FC<PropsWithChildren<UIState>> = ({ children }) => {
             openSideBarMenu,
             closeSideBarMenu,
             // set agregar entrada tareas
-            setIsAddingEntry
+            setIsAddingEntry,
+            // dragging
+            startDragging,
+            endDragging
         }}>
             {children}
         </UIContex.Provider>

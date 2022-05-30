@@ -45,13 +45,18 @@ export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children 
         dispatch({type:'[Entry] - Add-Entry', payload: newEntry})
     }
 
+    const updateEntry = (entry:Entry) => {
+        dispatch({type:'[Entry] - Updated-Entry', payload:entry})
+    }
+
     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE)
 
     return (
         <EntriesContex.Provider value={{
             ...state,
             // metodo
-            addNewEntry
+            addNewEntry,
+            updateEntry
          }}>
          {children}
         </EntriesContex.Provider>
