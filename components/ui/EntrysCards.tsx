@@ -1,8 +1,8 @@
 import { FC, DragEvent, useContext } from 'react'
 import { Entry } from '../../interfaces'
+import { UIContex } from '../../context/ui';
 
 import { Card, CardActionArea, CardActions, CardContent, Typography } from '@mui/material'
-import { UIContex } from '../../context/ui';
 
 interface Props {
     entry: Entry;

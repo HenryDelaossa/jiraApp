@@ -38,7 +38,7 @@ export const EntrysList: FC<Props> = ({ status }) => {
         // to do: el drop
         <div onDrop={onDropEntry} onDragOver={allowDrop} className={isDragging ? styles.dragging : ''}>
             <Paper sx={{ height: 'calc(100vh - 250px)', overflow: "scroll", backgroundColor: 'transparent', padding: '1px 5px','&::-webkit-scrollbar': { display: 'none' } }}>
-                {/* to do: cambia si se hace drop o no */}
+                {/* cambia si se hace drop o no */}
                 <List sx={{ opacity: isDragging ? 0.4 : 1, transition: '.2s all' }}>
                     {
                         entrysbyStatus.map(entry => (
