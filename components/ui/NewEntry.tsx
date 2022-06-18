@@ -43,11 +43,13 @@ export const NewEntry = () => {
                             placeholder='insertar entrada'
                             autoFocus
                             multiline
+                            minRows={12}
+                            maxRows={200}
                             label='nueva entrada'
                             helperText={inputValue.length <= 0 && touch && 'inngresa un valor'}
                             error={inputValue.length <= 0 && touch}
                             value={inputValue}
-                            onChange={onTextFieldChange}
+                            onInput={onTextFieldChange}
                             onBlur={() => setTouch(true)}
                         />
 

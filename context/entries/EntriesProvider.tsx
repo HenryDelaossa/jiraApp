@@ -2,7 +2,6 @@ import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 import { Entry } from '../../interfaces';
 import { EntriesContex, entriesReducer } from './';
 
-import { v4 as uuidv4 } from 'uuid';
 import { entriesApi } from '../../apis';
 
 
@@ -22,25 +21,31 @@ export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children 
      * id, the string, the current date, and a status of pending.
      * @param {string} description - string - this is the description of the entry
      */
-    const addNewEntry = (description: string) => {
-        const newEntry: Entry = {
-            _id: uuidv4(),
-            description,
-            createdAt: Date.now(),
-            status: 'pending'
-        }
-        dispatch({ type: '[Entry] - Add-Entry', payload: newEntry })
+    const addNewEntry = async (description: string) => {
+
+        const { data } = await entriesApi.post<Entry>('/entries', { description })
+        dispatch({ type: '[Entry] - Add-Entry', payload: data })
+
     }
 
 
 
-    /**
-     * The function updateEntry takes an argument of type Entry and returns a function that takes an
-     * argument of type Dispatch and returns void.
-     * @param {Entry} entry - Entry - This is the entry that we want to update.
-     */
-    const updateEntry = (entry: Entry) => {
-        dispatch({ type: '[Entry] - Updated-Entry', payload: entry })
+    
+   /**
+    * The function takes an object with the properties _id, description, and status, and then it
+    * updates the entry with the given _id with the given description and status.
+    * @param {Entry}  - Entry - is the type of the object that is being passed in.
+    */
+    const updateEntry = async ({ _id, description, status }: Entry) => {
+        try {
+            const { data } = await entriesApi.put<Entry>(`/entries/${_id}`, { description, status })
+
+            dispatch({ type: '[Entry] - Updated-Entry', payload: data });
+
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
 
