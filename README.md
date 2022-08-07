@@ -1,6 +1,6 @@
 # nextJs opemJiraSimul App
 
-para correo la app localmente se nececita la base de datos
+para correr la app localmente se nececita la base de datos
 
 - El -d signfica **detached**
 

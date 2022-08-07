@@ -4,6 +4,7 @@ import { UIProvider } from '../context/ui'
 
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { darkTheme } from '../themes'
+import { SnackbarProvider } from "notistack"
 
 
 
@@ -11,14 +12,17 @@ import { darkTheme } from '../themes'
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (
-    <EntriesProvider entries={[]}>
-      <UIProvider sideBarMenuOpen={false}>
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </UIProvider>
-    </EntriesProvider>
+    <SnackbarProvider maxSnack={4}>
+      <EntriesProvider entries={[]}>
+        <UIProvider sideBarMenuOpen={false} isAddingEntry={false} isDragging={false}>
+          <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </UIProvider>
+      </EntriesProvider>
+    </SnackbarProvider>
+
   )
 }
 

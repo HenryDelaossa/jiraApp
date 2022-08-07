@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 import { Entry } from '../../interfaces';
 import { EntriesContex, entriesReducer } from './';
+import { useSnackbar } from "notistack"
 
 import { entriesApi } from '../../apis';
 
@@ -15,7 +16,7 @@ const Entries_INITIAL_STATE: EntriesState = {
 
 export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children }) => {
 
-
+    const { enqueueSnackbar } = useSnackbar()
     /**
      * AddNewEntry is a function that takes a string as an argument and returns an object with a unique
      * id, the string, the current date, and a status of pending.
@@ -30,17 +31,27 @@ export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children 
 
 
 
-    
-   /**
-    * The function takes an object with the properties _id, description, and status, and then it
-    * updates the entry with the given _id with the given description and status.
-    * @param {Entry}  - Entry - is the type of the object that is being passed in.
-    */
-    const updateEntry = async ({ _id, description, status }: Entry) => {
+
+    /**
+     * The function takes an object with the properties _id, description, and status, and then it
+     * updates the entry with the given _id with the given description and status.
+     * @param {Entry}  - Entry - is the type of the object that is being passed in.
+     */
+    const updateEntry = async ({ _id, description, status }: Entry, showSnackBar = false) => {
+
         try {
             const { data } = await entriesApi.put<Entry>(`/entries/${_id}`, { description, status })
-
             dispatch({ type: '[Entry] - Updated-Entry', payload: data });
+            if (showSnackBar) {
+                enqueueSnackbar('Tarea actualizada', {
+                    variant: 'success',
+                    autoHideDuration: 1500,
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }
+                })
+            }
 
         } catch (error) {
             console.log(error)
@@ -48,6 +59,31 @@ export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children 
 
     }
 
+
+    const deleteEntry = async (entry: Entry, showSnackbar = false) => {
+        try {
+            const { data } = await entriesApi.delete<Entry>(`/entries/${entry._id}`)
+
+            dispatch({
+                type: '[Entry] - Delete-Entry',
+                payload: data
+            })
+
+            if (showSnackbar) {
+                enqueueSnackbar('Entrada borrada correctamente', {
+                    variant: 'success',
+                    autoHideDuration: 1500,
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }
+                })
+            }
+
+        } catch (error) {
+            console.log({ error });
+        }
+    }
 
 
     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE)
@@ -71,7 +107,8 @@ export const EntriesProvider: FC<PropsWithChildren<EntriesState>> = ({ children 
             ...state,
             // metodo
             addNewEntry,
-            updateEntry
+            updateEntry,
+            deleteEntry
         }}>
             {children}
         </EntriesContex.Provider>
